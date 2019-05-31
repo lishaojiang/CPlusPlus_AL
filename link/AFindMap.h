@@ -12,10 +12,21 @@ struct Point
     {
         iX = 0;
         iY = 0;
+        iCost = INT_MAX;
     }
+
+    Point(int X,int Y ,int Cost)
+    {
+        iX = X;
+        iY = Y;
+        iCost = Cost;
+    }
+
     int iX;
     int iY;
+    int iCost;
 };
+
 struct Grid
 {
     Grid ()
@@ -58,13 +69,18 @@ public:
 
     void PrintPath();
 
+    bool IsInClostList(int iX,int iY);
+    bool IsInOpenList(int iX,int iY);
+
 
 
 private:
     int m_iMapWidth;
     int m_iMapHeight;
+    bool m_bCanObliqueMove;                 // can move obliqued
     std::vector<Grid> m_kMapGrid;
     std::vector<Point> m_kOpenList;
+    std::vector<Point> m_kCloseList;
 };
 
 #endif

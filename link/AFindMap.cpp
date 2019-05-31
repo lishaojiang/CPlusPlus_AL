@@ -3,7 +3,9 @@
 
 BeFindPath::BeFindPath()
 {
-
+    m_bCanObliqueMove = false;
+    m_iMapWidth = 0;
+    m_iMapHeight = 0;
 }
 
 BeFindPath::~BeFindPath()
@@ -51,8 +53,58 @@ BYTE BeFindPath::GetBlock(int iX,int iY)
     return byRet;
 }
 
+bool BeFindPath::IsInClostList(int iX,int iY)
+{
+    for(int i = 0; i <m_kCloseList.size();i++)
+    {
+        if(m_kCloseList[i].iX == iX && m_kCloseList[i].iY ==iY)
+        {
+            return true;
+        }
+    }
+    return false;
+}
+
+bool BeFindPath::IsInOpenList(int iX,int iY)
+{
+    for(int i = 0; i <m_kOpenList.size();i++)
+    {
+        if(m_kOpenList[i].iX == iX && m_kOpenList[i].iY == iY)
+        {
+            return true;
+        }
+    }
+    return false;
+}
+
 void BeFindPath::FindPath(int iStartX,int iStartY,int iEndX,int iEndY)
 {
+    if(iStartX >= m_iMapWidth || iStartY >= m_iMapHeight || iEndX >= m_iMapWidth || iEndY >= m_iMapHeight)
+    {
+        return;
+    }
+
+    // first add original point
+    Point kPointStart(iStartX,iStartY,INT_MAX);
+    m_kCloseList.push_back(kPointStart);
+
+    int iPointX = iStartX;
+    int iPointY = iStartY;
+
+     // put near 4 point to open list,
+     // left,right,up,down
+     for(int i = 0; i < 4; i++)
+     {
+         if((iPointX - 1) >= 0)
+         {
+             // 
+         }
+     }
+    if(m_bCanObliqueMove)
+    {
+
+    }
+
 
 }
 
