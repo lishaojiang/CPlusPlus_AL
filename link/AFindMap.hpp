@@ -30,14 +30,7 @@ struct Point
     float fCost;
 };
 
-bool STLComparePoint(const Point & rkLeft,const Point & rkRight)
-{
-    if((rkLeft.fCost + rkLeft.iHaveCost) < (rkRight.fCost + rkRight.iHaveCost))
-    {
-        return true;
-    }
-    return false;
-}
+bool STLComparePoint(const Point & rkLeft,const Point & rkRight);
 
 struct Grid
 {
@@ -87,6 +80,8 @@ public:
 
     bool IsInClostList(int iX,int iY);
     bool IsInOpenList(int iX,int iY);
+    float extracted(int iX, int iY);
+    
     void ChangeOpenListCost(int iX,int iY,int iCost);
     void AddPointInOpenList(int iX,int iY,int iHaveCost,std::vector<Point>& rkList);
     void RemovePointFromOpenList(int iX,int iY);
