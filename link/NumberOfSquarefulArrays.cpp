@@ -1,6 +1,7 @@
 #include<iostream>
 #include<vector>
 #include<set>
+#include<map>
 #include<math.h>
 
 
@@ -101,6 +102,84 @@ public:
 	}
 };
 
+class ClasGraphic
+{
+public:
+    struct Node
+    {
+        int iValue;
+        int iTimes;
+        set<Node*> kChild;
+    };
+    
+    void DFS_Search(Node* pkNode,int N,int& iTimes)
+    {
+        if(N == 0)
+        {
+            iTimes++;
+            return;
+        }
+        if(pkNode && !pkNode->kChild.empty())
+        {
+            set<Node*>::iterator iter = pkNode->kChild.begin();
+            for(;iter != pkNode->kChild.end();iter++)
+            {
+                (*iter)->iTimes--;
+                if((*iter)->iTimes >= 0)
+                    DFS_Search(*iter,N-1,iTimes);
+                (*iter)->iTimes++;
+            }
+        }
+    }
+    
+    int numSquarefulPerms(vector<int>& A)
+    {
+        map<int,Node*> kGraphic;
+        int iTimes = 0;
+        // make nodes
+        for(int i = 0; i < A.size();i++)
+        {
+            map<int,Node*>::iterator it = kGraphic.find(A[i]);
+            if(it == kGraphic.end())
+            {
+                Node* pkNode = new Node;
+                pkNode->iValue = A[i];
+                pkNode->iTimes = 1;
+                kGraphic[A[i]] = pkNode;
+            }
+            else
+            {
+                it->second->iTimes++;
+            }
+        }
+        
+        // make path
+        for(map<int,Node*>::iterator iterA = kGraphic.begin();iterA != kGraphic.end();iterA++)
+        {
+            for(map<int,Node*>::iterator iterB = kGraphic.begin();iterB != kGraphic.end();iterB++)
+            {
+                if(sqrt(float(iterA->first + iterB->first)) == (int)sqrt(float(iterA->first + iterB->first)))
+                {
+                    iterA->second->kChild.insert(iterB->second);
+                }
+            }
+        }
+        
+        // DFS search
+        map<int,Node*>::iterator iterA = kGraphic.begin();
+        for(;iterA != kGraphic.end();iterA++)
+        {
+            iterA->second->iTimes--;
+            DFS_Search(iterA->second,A.size()-1,iTimes);
+            iterA->second->iTimes++;
+        }
+        
+        return iTimes;
+        
+    }
+};
+
+
 int main(int,const char**)
 {
 	vector<int> a;
@@ -113,7 +192,7 @@ int main(int,const char**)
 	//a.push_back(2);
 	//a.push_back(2);
 	//a.push_back(2);
-	Solution ks;
+	ClasGraphic ks;
 	int iRet = ks.numSquarefulPerms(a);
 	return 0;
 }
